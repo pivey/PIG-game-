@@ -12,13 +12,39 @@ GAME RULES:
 // These variables work in the global scope as they are defined out here even though their values are 
 // in the init function. 
 
-var scores, roundScore, activePlayer, gamePlaying; 
+/*
+YOUR 3 CHALLENGES
+Change the game to follow these rules:
+
+1. A player looses his ENTIRE score when he rolls two 6 in a row. After that, it's the next player's turn. (Hint: Always save the previous dice roll in a separate variable)
+2. Add an input field to the HTML where players can set the winning score, so that they can change the predefined score of 100. (Hint: you can read that value with the .value property in JavaScript. This is a good oportunity to use google to figure this out :)
+3. Add another dice to the game, so that there are two dices now. The player looses his current score when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS code for the first one.)
+*/
+
+var scores, roundScore, activePlayer, gamePlaying, chosenScore; 
 
 init();
+
+
+
+chosenScore = 100; 
+
+document.querySelector(".submit").addEventListener("click", function(){
+	chosenScore =  document.querySelector(".chooseScore").value;
+	alert("The winning score has been set to " + chosenScore );
+	init()
+	this.value="";
+
+});
+
+	
+
 
 	document.querySelector(".btn-roll").addEventListener("click", function(){
 
 		if (gamePlaying) { 
+
+			// roundScore == 12 ? && rolledDice == 2 nextPlayer() : rolledDice == 0; 
 
 			// Random number from the dice roll
 
@@ -61,7 +87,7 @@ init();
 
 			//check if the player has won
 
-			if (scores[activePlayer] >= 100) {
+			if (scores[activePlayer] >= chosenScore) {
 
 				document.querySelector("#name-" + activePlayer).textContent = "Winner!"; 
 				document.querySelector(".dice").style.display = "none"; 
