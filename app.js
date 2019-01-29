@@ -21,12 +21,20 @@ Change the game to follow these rules:
 3. Add another dice to the game, so that there are two dices now. The player looses his current score when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS code for the first one.)
 */
 
-var scores, roundScore, activePlayer, gamePlaying, chosenScore; 
+var scores, roundScore, activePlayer, gamePlaying, chosenScore, prevDiceRoll, currentRoll; 
 
 init();
 
+//check whether dice-6-png has appeared 2 times in a row
 
 
+
+prevDiceRoll; 
+currentRoll; 
+
+
+
+/* first attempt at user input winning score 
 chosenScore = 100; 
 
 document.querySelector(".submit").addEventListener("click", function(){
@@ -36,7 +44,7 @@ document.querySelector(".submit").addEventListener("click", function(){
 	this.value="";
 
 });
-
+*/
 	
 
 
@@ -44,11 +52,11 @@ document.querySelector(".submit").addEventListener("click", function(){
 
 		if (gamePlaying) { 
 
-			// roundScore == 12 ? && rolledDice == 2 nextPlayer() : rolledDice == 0; 
 
 			// Random number from the dice roll
 
 			var diceRoll = Math.floor(Math.random() * 6) + 1; 
+			
 
 			// Display the result
 
@@ -57,10 +65,15 @@ document.querySelector(".submit").addEventListener("click", function(){
 			diceDOM.src = "dice-" + diceRoll + ".png";
 
 			// Update the round score if the number was anything other than a 1 
+			// Check if 2 6's were rolled after another. and delete score if true. 
 
 			document.getElementById("current-" + activePlayer).textContent = roundScore; 
 
-			if (diceRoll !== 1) {
+			if (diceRoll === 6 && prevDiceRoll === 6 ) {
+				scores[activePlayer] = 0; 
+				document.querySelector("#score-" + activePlayer).innerHTML = scores[activePlayer]; 
+				nextPlayer();
+			} else	if (diceRoll !== 1) {
 				// add score 
 				roundScore += diceRoll; 
 
@@ -72,6 +85,7 @@ document.querySelector(".submit").addEventListener("click", function(){
 
 		}
 
+		prevDiceRoll = diceRoll;
 		
 	});
 
@@ -84,10 +98,18 @@ document.querySelector(".submit").addEventListener("click", function(){
 
 			document.querySelector("#score-" + activePlayer).innerHTML = scores[activePlayer]; 
 
-
 			//check if the player has won
 
-			if (scores[activePlayer] >= chosenScore) {
+			chosenScore =  document.querySelector(".chooseScore").value;
+			var winningScore; 
+
+			if (chosenScore) {
+				winningScore = chosenScore; 
+			} else {
+				winningScore = 100; 
+			}
+
+			if (scores[activePlayer] >= winningScore) {
 
 				document.querySelector("#name-" + activePlayer).textContent = "Winner!"; 
 				document.querySelector(".dice").style.display = "none"; 
